@@ -2,7 +2,7 @@
 """document"""
 import csv
 import math
-from typing import List
+from typing import List, Dict
 
 
 class Server:
@@ -43,3 +43,16 @@ class Server:
                 positive integer."
         tup = self.index_range(page, page_size)
         return self.dataset()[tup[0]:tup[1]]
+
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, any]:
+        """get hyper function"""
+        data = self.get_page(page, page_size)
+        total_pages = math.ceil(len(self.dataset()) / page_size)
+        return {
+            "page_size": len(data),
+            "page": page,
+            "data": data,
+            "next_page": page + 1 if page < total_pages else None,
+            "prev_page": page - 1 if page > 1 else None,
+            "total_pages": total_pages
+        }
